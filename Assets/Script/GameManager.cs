@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour {
     public GameObject nodePrefab;
     public GameObject[] healthBar;
     public GameObject[] multiplierBar;
-    public GameObject runningPhoneGuy;
     public AudioClip[] music;
     public AudioClip[] sounds;
     public AudioClip[] nodeSounds;
@@ -54,7 +53,6 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        runningPhoneGuy.SetActive(false);
         // locate object spawners
         spawnerPositions = GameObject.FindGameObjectsWithTag("spawner");
         spawningRate = initSpawningRate;
@@ -233,7 +231,6 @@ public class GameManager : MonoBehaviour {
         health = 5;
         multiplier = 1;
         updateUI();
-        runningPhoneGuy.SetActive(true);
         musicSource.clip = music[1];
         musicSource.Play();
     }
@@ -365,7 +362,6 @@ public class GameManager : MonoBehaviour {
             }
             spawningRate = initSpawningRate;
             gameState = GameState.GAMEOVER;
-            runningPhoneGuy.SetActive(false);
             score = 0;
             health = 5;
             musicSource.Pause();

@@ -1713,7 +1713,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnerPositions: []
   nodes: []
-  comboUi: []
+  comboParticle: {fileID: 1568237339785994, guid: 4c66b03afd4e45d409e9aa60b16c59f9,
+    type: 2}
+  comboParticles: []
   buttons:
   - {fileID: 435348825}
   - {fileID: 666443969}
@@ -1772,7 +1774,7 @@ MonoBehaviour:
   vocalsSource: {fileID: 89640726}
   animationPlayer: {fileID: 1697476225}
   particle: {fileID: 1181696107903272, guid: 64eb348c1b3d193429e945b88307337b, type: 2}
-  particleList: []
+  deathParticles: []
   dropRate: 0.1
   scoreText: {fileID: 895133823}
   initSpawningRate: 2
@@ -1780,7 +1782,6 @@ MonoBehaviour:
   minRate: 0.6
   maxSpawnedNodes: 8
   maxSpawnedParticles: 5
-  maxSpawnedCombo: 0
 --- !u!4 &1125775401
 Transform:
   m_ObjectHideFlags: 0

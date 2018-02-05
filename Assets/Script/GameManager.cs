@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour {
 
     public GameObject[] spawnerPositions;
     public GameObject[] nodes;
-    public GameObject[] comboUi;
+    public GameObject comboParticle;
+    public GameObject[] comboParticles;
     public GameObject[] buttons;
     public Material[] buttonMaterials;
     public GameObject nodePrefab;
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour {
     public AudioSource vocalsSource;
     public Anim animationPlayer;
     public GameObject particle;
-    public GameObject[] particleList;
+    public GameObject[] deathParticles;
     public float dropRate = 1.0f;
     public Text scoreText;
     public float initSpawningRate;
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour {
     float spawningRate;
     public int maxSpawnedNodes;
     public int maxSpawnedParticles;
-    public int maxSpawnedCombo;
     int multiplier = 1;
     int score = 0;
     int health = 5;
@@ -296,28 +296,28 @@ public class GameManager : MonoBehaviour {
                     audioSourceNodes.clip = nodeSounds[Random.Range(0, 2)];
                     audioSourceNodes.Play();
                     // create particle
-                    if (particleList.Length < maxSpawnedParticles)
+                    if (deathParticles.Length < maxSpawnedParticles)
                     {
                         Debug.Log("creating particle!");
                         // create a new particle
                         Instantiate(particle, nodes[i].transform.position, Quaternion.identity);
-                        particleList = GameObject.FindGameObjectsWithTag("particle");
+                        deathParticles = GameObject.FindGameObjectsWithTag("particle");
                     }
                     else
                     {
-                        for (int p = 0; p < particleList.Length; p++)
+                        for (int p = 0; p < deathParticles.Length; p++)
                         {
-                            Particle particleScript = particleList[p].GetComponent<Particle>();
+                            Particle particleScript = deathParticles[p].GetComponent<Particle>();
                             if (particleScript.isActive() == false)
                             {
                                 // we found a particle - move it to the right position and activate it
-                                particleList[p].transform.position = nodes[i].transform.position;
+                                deathParticles[p].transform.position = nodes[i].transform.position;
                                 particleScript.activateParticle();
                                 break;
                             }
                         }
                     }
-                    // add to the combo particleList list
+                    // add to the combo deathParticles list
                     // comboPos.Add(nodes[i].GetComponent<Transform>().position);
                     if (multiplier < 5)
                     {
@@ -332,23 +332,29 @@ public class GameManager : MonoBehaviour {
         // check if combo list is bigger than one
         if (comboPos.Count > 1)
         {
-            //// add combo counter
-            //score += comboPos.Count;
-            //for (int x = 0; x < comboPos.Count; x++)
-            //{
-            //    // for each position, try to find a non-active combo particleList and display it
-            //    for (int y = 0; y < comboUi.Length; y++)
-            //    {
-            //        Particle particleScript = comboUi[y].GetComponent<Particle>();
-            //        if (particleScript.isActive() == false)
-            //        {
-            //            // we found a particleList - move it to the right position and activate it
-            //            comboUi[y].transform.position = comboPos[x];
-            //            particleScript.activateParticle();
-            //            break;
-            //        }
-            //    }
-            //}
+            for (int i = 0; i < comboPos.Count; i++)
+            {
+                if (comboParticles.Length < maxSpawnedParticles)
+                {
+                    // create a new particle
+                    Instantiate(comboParticle, comboPos[i], Quaternion.identity);
+                    deathParticles = GameObject.FindGameObjectsWithTag("particle");
+                }
+                else
+                {
+                    for (int p = 0; p < comboParticles.Length; p++)
+                    {
+                        Particle particleScript = deathParticles[p].GetComponent<Particle>();
+                        if (particleScript.isActive() == false)
+                        {
+                            // we found a particle - move it to the right position and activate it
+                            deathParticles[p].transform.position = comboPos[i];
+                            particleScript.activateParticle();
+                            break;
+                        }
+                    }
+                }
+            }
             // play audio
             vocalsSource.clip = vocalSounds[0];
             vocalsSource.Play();

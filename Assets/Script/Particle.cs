@@ -7,28 +7,48 @@ public class Particle : MonoBehaviour {
     public float animRate;
     float animTimer = 0.0f;
     int animCounter = 0;
+    private bool active;
+    private SpriteRenderer spriteRenderer;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+	    spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+	    active = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        animTimer += Time.deltaTime;
-        if (animTimer >= animRate)
-        {
-            animTimer = 0.0f;
-            Debug.Log(animCounter);
-            if (animCounter >= particleSprites.Length)
-            {
-                Destroy(this.gameObject);
-            }
-            else
-            {
-                GetComponent<SpriteRenderer>().sprite = particleSprites[animCounter];
-                animCounter++;
-            }
-        }
+	    if (active)
+	    {
+	        animTimer += Time.deltaTime;
+	        if (animTimer >= animRate)
+	        {
+	            animTimer = 0.0f;
+	            if (animCounter >= particleSprites.Length)
+	            {
+	                // deactivate spriteRenderer
+	                spriteRenderer.enabled = false;
+                    // reset variables
+	                active = false;
+	                animCounter = 0;
+	            }
+	            else
+	            {
+	                GetComponent<SpriteRenderer>().sprite = particleSprites[animCounter];
+	                animCounter++;
+	            }
+	        }
+	    }
+	}
+
+    public void activateParticle()
+    {
+        active = true;
+    }
+
+    public bool isActive()
+    {
+        return active;
     }
 }

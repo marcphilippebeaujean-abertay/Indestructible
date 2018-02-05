@@ -8,6 +8,8 @@ TagManager:
   - node
   - button
   - gamemanager
+  - combo
+  - particle
   layers:
   - Default
   - TransparentFX

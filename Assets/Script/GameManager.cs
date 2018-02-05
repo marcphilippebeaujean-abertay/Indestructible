@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ public class GameManager : MonoBehaviour {
 
     public GameObject[] spawnerPositions;
     public GameObject[] nodes;
-    public GameObject comboUI;
+    public GameObject[] comboUi;
     public GameObject[] buttons;
     public Material[] buttonMaterials;
     public GameObject nodePrefab;
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour {
     public AudioSource vocalsSource;
     public Anim animationPlayer;
     public GameObject particle;
+    public GameObject[] particleList;
     public float dropRate = 1.0f;
     public Text scoreText;
     public float initSpawningRate;
@@ -30,6 +32,8 @@ public class GameManager : MonoBehaviour {
     public float minRate = 2.0f;
     float spawningRate;
     public int maxSpawnedNodes;
+    public int maxSpawnedParticles;
+    public int maxSpawnedCombo;
     int multiplier = 1;
     int score = 0;
     int health = 5;
@@ -92,7 +96,6 @@ public class GameManager : MonoBehaviour {
                 {
                     //do something
                     animationPlayer.switchAnim(5);
-                    Debug.Log("running loading animation");
                     gameState = GameState.LOADING;
                 }
                 break;
@@ -274,9 +277,8 @@ public class GameManager : MonoBehaviour {
     {
         // create bool to determine if our button press returned a correct button press
         bool correctButtonPressed = false;
-        // create variable that tracks the deleted nodes during this press
-        int comboCounter = 0;
-        Vector3 initComboCounterPos = new Vector3(0, 0, 0);
+        // create list for combo counter
+        List<Vector3> comboPos = new List<Vector3>();
         // iterate through each node
         for(int i = 0; i < nodes.Length; i++)
         {
@@ -293,18 +295,30 @@ public class GameManager : MonoBehaviour {
                     // play sound
                     audioSourceNodes.clip = nodeSounds[Random.Range(0, 2)];
                     audioSourceNodes.Play();
-                    // increment combo counter!
-                    comboCounter++;
                     // create particle
-                    Instantiate(particle, nodes[i].transform.position, Quaternion.identity);
-                    if(comboCounter <= 1)
+                    if (particleList.Length < maxSpawnedParticles)
                     {
-                        initComboCounterPos = nodes[i].GetComponent<Transform>().position;
+                        Debug.Log("creating particle!");
+                        // create a new particle
+                        Instantiate(particle, nodes[i].transform.position, Quaternion.identity);
+                        particleList = GameObject.FindGameObjectsWithTag("particle");
                     }
                     else
                     {
-                        Instantiate(comboUI, nodes[i].GetComponent<Transform>().position, Quaternion.identity);
+                        for (int p = 0; p < particleList.Length; i++)
+                        {
+                            Particle particleScript = particleList[p].GetComponent<Particle>();
+                            if (particleScript.isActive() == false)
+                            {
+                                // we found a particle - move it to the right position and activate it
+                                particleList[p].transform.position = nodes[i].transform.position;
+                                particleScript.activateParticle();
+                                break;
+                            }
+                        }
                     }
+                    // add to the combo particleList list
+                    // comboPos.Add(nodes[i].GetComponent<Transform>().position);
                     if (multiplier < 5)
                     {
                         // increment the multiplier
@@ -315,11 +329,27 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if (comboCounter > 1)
+        // check if combo list is bigger than one
+        if (comboPos.Count > 1)
         {
-            // add combo counter
-            score += comboCounter;
-            Instantiate(comboUI, initComboCounterPos, Quaternion.identity);
+            //// add combo counter
+            //score += comboPos.Count;
+            //for (int x = 0; x < comboPos.Count; x++)
+            //{
+            //    // for each position, try to find a non-active combo particleList and display it
+            //    for (int y = 0; y < comboUi.Length; y++)
+            //    {
+            //        Particle particleScript = comboUi[y].GetComponent<Particle>();
+            //        if (particleScript.isActive() == false)
+            //        {
+            //            // we found a particleList - move it to the right position and activate it
+            //            comboUi[y].transform.position = comboPos[x];
+            //            particleScript.activateParticle();
+            //            break;
+            //        }
+            //    }
+            //}
+            // play audio
             vocalsSource.clip = vocalSounds[0];
             vocalsSource.Play();
         }
@@ -387,7 +417,6 @@ public class GameManager : MonoBehaviour {
         // display health ui elements
         for (int i = 0; i < healthBar.Length; i++)
         {
-            Debug.Log(health);
             if (health == i)
             {
                 healthBar[i].SetActive(true);

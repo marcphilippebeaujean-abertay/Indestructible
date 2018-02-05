@@ -35,7 +35,7 @@ public class Particle : MonoBehaviour {
 	            }
 	            else
 	            {
-	                GetComponent<SpriteRenderer>().sprite = particleSprites[animCounter];
+	                spriteRenderer.sprite = particleSprites[animCounter];
 	                animCounter++;
 	            }
 	        }
@@ -44,6 +44,8 @@ public class Particle : MonoBehaviour {
 
     public void activateParticle()
     {
+        spriteRenderer.sprite = particleSprites[0];
+        spriteRenderer.enabled = true;
         active = true;
     }
 

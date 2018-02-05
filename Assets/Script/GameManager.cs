@@ -305,7 +305,7 @@ public class GameManager : MonoBehaviour {
                     }
                     else
                     {
-                        for (int p = 0; p < particleList.Length; i++)
+                        for (int p = 0; p < particleList.Length; p++)
                         {
                             Particle particleScript = particleList[p].GetComponent<Particle>();
                             if (particleScript.isActive() == false)

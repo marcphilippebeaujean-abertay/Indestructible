@@ -19,12 +19,16 @@ public class Particle : MonoBehaviour {
         if (animTimer >= animRate)
         {
             animTimer = 0.0f;
-            animCounter++;
+            Debug.Log(animCounter);
             if (animCounter >= particleSprites.Length)
             {
                 Destroy(this.gameObject);
             }
-            GetComponent<SpriteRenderer>().sprite = particleSprites[animCounter];
+            else
+            {
+                GetComponent<SpriteRenderer>().sprite = particleSprites[animCounter];
+                animCounter++;
+            }
         }
     }
 }

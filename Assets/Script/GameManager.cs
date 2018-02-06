@@ -338,7 +338,7 @@ public class GameManager : MonoBehaviour {
                 {
                     // create a new particle
                     Instantiate(comboParticle, comboPos[i], Quaternion.identity);
-                    deathParticles = GameObject.FindGameObjectsWithTag("particle");
+                    comboParticles = GameObject.FindGameObjectsWithTag("combo");
                 }
                 else
                 {

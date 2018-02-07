@@ -45,12 +45,6 @@ public class Node : MonoBehaviour {
         }
     }
 
-    //void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    Debug.Log("collided!");
-    //    toggleActiveStatus();
-    //}
-
     public void advanceNode()
     {
         // move node down screen

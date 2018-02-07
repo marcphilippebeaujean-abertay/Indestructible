@@ -130,59 +130,6 @@ public class GameManager : MonoBehaviour {
                     }
                     movTimer = 0.0f;
                 }
-                // iterate through numpad keycodes - keep in mind that the keys on nokia are inversed to the numpad keys
-                if (Input.GetKeyDown("[7]") || Input.GetKeyDown("1"))
-                {
-                    InitButtonPress(0);
-                    audioSource1.clip = sounds[4];
-                    audioSource1.Play();
-                }
-                if (Input.GetKeyDown("[8]") || Input.GetKeyDown("2"))
-                {
-                    InitButtonPress(1);
-                    audioSource1.clip = sounds[5];
-                    audioSource1.Play();
-                }
-                if (Input.GetKeyDown("[9]") || Input.GetKeyDown("3"))
-                {
-                    InitButtonPress(2);
-                    audioSource1.clip = sounds[6];
-                    audioSource1.Play();
-                }
-                if (Input.GetKeyDown("[4]") || Input.GetKeyDown("4"))
-                {
-                    InitButtonPress(3);
-                    audioSource1.clip = sounds[7];
-                    audioSource1.Play();
-                }
-                if (Input.GetKeyDown("[5]") || Input.GetKeyDown("5"))
-                {
-                    InitButtonPress(4);
-                }
-                if (Input.GetKeyDown("[6]") || Input.GetKeyDown("6"))
-                {
-                    InitButtonPress(5);
-                    audioSource1.clip = sounds[8];
-                    audioSource1.Play();
-                }
-                if (Input.GetKeyDown("[1]") || Input.GetKeyDown("7"))
-                {
-                    InitButtonPress(6);
-                    audioSource1.clip = sounds[9];
-                    audioSource1.Play();
-                }
-                if (Input.GetKeyDown("[2]") || Input.GetKeyDown("8"))
-                {
-                    InitButtonPress(7);
-                    audioSource1.clip = sounds[10];
-                    audioSource1.Play();
-                }
-                if (Input.GetKeyDown("[3]") || Input.GetKeyDown("9"))
-                {
-                    InitButtonPress(8);
-                    audioSource1.clip = sounds[11];
-                    audioSource1.Play();
-                }
                 break;
             case GameState.GAMEOVER:
                 if (animationPlayer.transitionStatus() == false)
@@ -273,7 +220,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void InitButtonPress(int button)
+    public void InitButtonPress(int button)
     {
         // create bool to determine if our button press returned a correct button press
         bool correctButtonPressed = false;
@@ -318,7 +265,6 @@ public class GameManager : MonoBehaviour {
                         }
                     }
                     // add to the combo deathParticles list
-                    // comboPos.Add(nodes[i].GetComponent<Transform>().position);
                     if (multiplier < 5)
                     {
                         // increment the multiplier
@@ -359,7 +305,10 @@ public class GameManager : MonoBehaviour {
             vocalsSource.clip = vocalSounds[0];
             vocalsSource.Play();
         }
-        if(!correctButtonPressed)
+        // play audio clip
+        audioSource1.clip = sounds[button];
+        audioSource1.Play();
+        if (!correctButtonPressed)
         {
             missedNode();
         }
